@@ -40,8 +40,8 @@ public class HouseController {
         return ResponseEntity.ok(updateFaculty);
     }
     @DeleteMapping("{id}")
-    public Faculty deleteFaculty(@PathVariable Long id){
-        return houseService.deleteFaculty(id);
+    public void deleteFaculty(@PathVariable Long id){
+         houseService.deleteFaculty(id);
     }
     @GetMapping("color")
     public ResponseEntity<Collection<Faculty>> getAllFacultyByColor(@RequestParam("color") String color){

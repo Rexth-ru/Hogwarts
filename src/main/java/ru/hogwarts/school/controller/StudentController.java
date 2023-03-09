@@ -38,8 +38,8 @@ public class StudentController {
        return ResponseEntity.ok(updateStudent);
     }
     @DeleteMapping("{id}")
-    public Student deleteStudent(@PathVariable Long id){
-        return studentService.deleteStudent(id);
+    public void deleteStudent(@PathVariable Long id){
+        studentService.deleteStudent(id);
     }
     @GetMapping("age")
     public ResponseEntity<Collection<Student>> getAllStudentByAge(@RequestParam("age") Integer age){
