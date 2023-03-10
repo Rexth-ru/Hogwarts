@@ -1,9 +1,13 @@
 package ru.hogwarts.school.model;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 @Entity
-
+@Data
 public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +17,9 @@ public class Faculty {
     private String name;
     @Column(name = "color")
     private String color;
+    @OneToMany(mappedBy = "faculty")
+    private Collection<Student> students;
+
 
     public Faculty() {
     }

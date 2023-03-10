@@ -1,8 +1,11 @@
 package ru.hogwarts.school.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Objects;
 @Entity
+@Data
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,6 +15,9 @@ public class Student {
    private String name;
     @Column(name = "age")
    private Integer age;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 
     public Student() {
     }
