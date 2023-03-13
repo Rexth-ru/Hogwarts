@@ -1,12 +1,23 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.dto.FacultyDTO;
+import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.dto.StudentDTO;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.model.Avatar;
+import ru.hogwarts.school.service.AvatarService;
 import ru.hogwarts.school.service.StudentService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 
 @RestController
@@ -14,9 +25,11 @@ import java.util.Collection;
 
 public class StudentController {
     private final StudentService studentService;
+    private final AvatarService avatarService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, AvatarService avatarService) {
         this.studentService = studentService;
+        this.avatarService = avatarService;
     }
     @GetMapping("{id}")
     public ResponseEntity getStudentById(@PathVariable Long id){
@@ -58,12 +71,33 @@ public class StudentController {
         }
         return ResponseEntity.ok(studentService.getAllStudent());
     }
-//    @GetMapping({"faculty"})
-//    public ResponseEntity getFacultyByIdStudent(@PathVariable Long id){
-//        FacultyDTO facultyDTO = studentService.getFacultyByIdStudent(id);
-//        if (facultyDTO==null){
-//            return ResponseEntity.notFound().build();
+//    @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<String> uploadAvatar(@PathVariable Long id,
+//                                               @RequestParam MultipartFile avatar) throws IOException {
+//        if (avatar.getSize() >= 1024*300){
+//            return ResponseEntity.badRequest().body("File is very big!");
 //        }
-//        return ResponseEntity.ok(facultyDTO);
+//        avatarService.uploadAvatar(id, avatar);
+//        return ResponseEntity.ok().build();
+//    }
+//    @GetMapping(value = "/{id}/avatar/preview")
+//    public ResponseEntity<byte[]> dounloadAvatar(@PathVariable Long id){
+//        Avatar avatar = avatarService.findAvatar(id);
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
+//        httpHeaders.setContentLength(avatar.getData().length);
+//        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(avatar.getData());
+//    }
+//    @GetMapping(value = "/{id}/avatar")
+//    public void dounloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException{
+//        Avatar avatar = avatarService.findAvatar(id);
+//        Path path = Path.of(avatar.getFilePath());
+//        try (InputStream inputStream = Files.newInputStream(path);
+//             OutputStream outputStream = response.getOutputStream();) {
+//            response.setStatus(200);
+//            response.setContentType(avatar.getMediaType());
+//            response.setContentLength((int)avatar.getFileSize());
+//            inputStream.transferTo(outputStream);
+//        }
 //    }
 }

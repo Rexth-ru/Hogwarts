@@ -51,9 +51,6 @@ public class StudentService {
         Collection<Student> students = studentRepository.findStudentByFacultyId(facultyId);
         return students.stream().map(StudentDTO::studentToDTO).collect(Collectors.toList());
      }
-//     public FacultyDTO getFacultyByIdStudent(Long id){
-//        return FacultyDTO.facultyToDTO(studentRepository.findFacultyByIdStudent(id));
-//     }
 
 }
 
