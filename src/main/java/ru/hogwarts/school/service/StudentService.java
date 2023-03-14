@@ -39,8 +39,11 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
      public Collection<StudentDTO> getAllStudent(Integer page, Integer count){
-        PageRequest pageRequest = PageRequest.of(page,count);
-         Collection<Student> students = studentRepository.findAll(pageRequest).getContent();
+        if (count>50||count<=0) {
+            count=50;
+        }
+            PageRequest pageRequest = PageRequest.of(page, count);
+            Collection<Student> students = studentRepository.findAll(pageRequest).getContent();
          return students.stream().map(StudentDTO::studentToDTO)
                  .collect(Collectors.toList());
      }

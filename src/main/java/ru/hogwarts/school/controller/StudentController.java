@@ -62,7 +62,8 @@ public class StudentController {
             @RequestParam(required = false) Integer age,
             @RequestParam(required = false) Integer minAge, @RequestParam(required = false) Integer maxAge,
             @RequestParam(required = false) Long facultyId,
-            @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer count){
+            @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer count)
+            throws IOException {
         if (age!=null) {
             return ResponseEntity.ok(studentService.getAllStudentByAge(age));
         }
@@ -72,10 +73,10 @@ public class StudentController {
         if (facultyId!=null){
             return ResponseEntity.ok(studentService.getAllStudentByFacultyId(facultyId));
         }
-//        if(page!=null && count!=null) {
-            return ResponseEntity.ok(studentService.getAllStudent(page,count));
-//        }
-//        return ResponseEntity.ok(studentService.getFirstStudentByAge());
+        if (page!=null && count!=null) {
+            return ResponseEntity.ok(studentService.getAllStudent(page, count));
+        }
+        return ResponseEntity.badRequest().build();
     }
     @GetMapping("/count-student")
     public Long countAllStudent(){
