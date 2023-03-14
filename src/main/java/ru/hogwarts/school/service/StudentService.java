@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.dto.StudentDTO;
@@ -37,8 +38,9 @@ public class StudentService {
        return students.stream().map(StudentDTO::studentToDTO)
                 .collect(Collectors.toList());
     }
-     public Collection<StudentDTO> getAllStudent(){
-         Collection<Student> students = studentRepository.findAll();
+     public Collection<StudentDTO> getAllStudent(Integer page, Integer count){
+        PageRequest pageRequest = PageRequest.of(page,count);
+         Collection<Student> students = studentRepository.findAll(pageRequest).getContent();
          return students.stream().map(StudentDTO::studentToDTO)
                  .collect(Collectors.toList());
      }
@@ -51,6 +53,16 @@ public class StudentService {
         Collection<Student> students = studentRepository.findStudentByFacultyId(facultyId);
         return students.stream().map(StudentDTO::studentToDTO).collect(Collectors.toList());
      }
+     public Long countAllStudent(){
+       return studentRepository.getCountOfStudent();
+     }
+      public Integer avgByAge(){
+        return studentRepository.avgAgeStudent();
+      }
+    public  Collection<StudentDTO> getFirstStudentByAge(){
+        Collection<Student> students = studentRepository.findFirstStudentByAge();
+        return students.stream().map(StudentDTO::studentToDTO).collect(Collectors.toList());
+    }
 
 }
 
